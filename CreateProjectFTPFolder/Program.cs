@@ -10,6 +10,15 @@ namespace CreateProjectFTPFolder
     {
         static void Main(string[] args)
         {
+            ShowMenu();
+        }
+
+        private static void ShowMenu()
+        {
+            while (true)
+            {
+
+            }
         }
     }
 }
