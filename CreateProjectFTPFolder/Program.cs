@@ -20,15 +20,15 @@ namespace CreateProjectFTPFolder
             while (true)
             {
                 Console.Write("Enter the project number (type 'exit' to exit the program): ");
-                var userInput = Console.ReadLine();
-                var projectNumber = userInput.Trim().ToLower();
+                var userInput = Console.ReadLine(); // Get input from user
+                var projectNumber = userInput.Trim().ToLower(); // Trim input and make it lower case
 
                 if (projectNumber.Equals("exit"))
                 {
                     break;
                 }
 
-                if (!CheckInput(projectNumber))
+                if (!CheckInput(projectNumber)) // Check if the user input is not a proper project number
                 {
                     Console.WriteLine("Invalid project number. The project number must consist in 6 digits.\n");
                 }
