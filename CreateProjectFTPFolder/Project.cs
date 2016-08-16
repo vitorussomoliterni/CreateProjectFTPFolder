@@ -23,7 +23,7 @@ namespace CreateProjectFTPFolder
 
         private string SetGDrivePath(string projectNumberWithName)
         {
-            return string.Format("G:\\20{0}\\{1}\\", ProjectYear, projectNumberWithName); // Sets the path for the new folder
+            return string.Format("C:\\test\\20{0}\\{1}\\", ProjectYear, projectNumberWithName); // Sets the path for the new folder
         }
 
         private string GetProjectNumberWithName(string originalPath)
