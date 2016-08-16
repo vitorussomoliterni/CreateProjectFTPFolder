@@ -32,6 +32,11 @@ namespace CreateProjectFTPFolder
                 {
                     Console.WriteLine("Invalid project number. The project number must consist in 6 digits.\n");
                 }
+
+                else
+                {
+                    var project = new Project(projectNumber);
+                }
             }
         }
 
