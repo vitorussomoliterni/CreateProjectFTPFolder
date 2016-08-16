@@ -43,7 +43,7 @@ namespace CreateProjectFTPFolder
         private static bool CheckInput(string projectNumber)
         {
             int integer;
-            if (projectNumber.Length != 6 || !int.TryParse(projectNumber, out integer))
+            if (projectNumber.Length != 5 || !int.TryParse(projectNumber, out integer))
             {
                 return false;
             }
