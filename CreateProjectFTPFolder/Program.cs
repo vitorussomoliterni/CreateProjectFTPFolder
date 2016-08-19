@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace CreateProjectFTPFolder
 {
@@ -57,13 +54,13 @@ namespace CreateProjectFTPFolder
                         }
 
                     }
-                    catch (DirectoryNotFoundException ex)
+                    catch (DirectoryNotFoundException)
                     {
                         Console.WriteLine("Error: no folder found on the P drive for the project {0}.", projectNumber);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("While trying to work on the project {0} this error occurred: {1}.", projectNumber, ex.Message);
                     }
                 }
             }
@@ -73,26 +70,30 @@ namespace CreateProjectFTPFolder
         {
             try
             {
-                Directory.CreateDirectory("C:\\test\\" + project.ProjectNumberWithName);
-
                 var SourcePath = @"F:\template\FTP";
-                var DestinationPath = @"C:\test\" + project.ProjectNumberWithName;
+
+                if (Directory.Exists(project.GDrivePath)) // Throws an exception if the destination folder already exists
+                {
+                    throw new DirectoryAlreadyExistsExceptions("A directory for this project already exists on the FTP drive.");
+                }
+
+                Directory.CreateDirectory(project.GDrivePath);
 
                 //Now Create all of the directories
                 foreach (string dirPath in Directory.GetDirectories(SourcePath, "*",
                     SearchOption.AllDirectories))
-                    Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+                    Directory.CreateDirectory(dirPath.Replace(SourcePath, project.GDrivePath));
 
                 //Copy all the files & Replaces any files with the same name
                 foreach (string newPath in Directory.GetFiles(SourcePath, "*.*",
                     SearchOption.AllDirectories))
-                    File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
+                    File.Copy(newPath, newPath.Replace(SourcePath, project.GDrivePath), true);
 
                 Console.WriteLine("\nSuccess.\n");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message, ex.Message);
+                Console.WriteLine("Error: {0}", ex.Message);
             }
         }
 
@@ -149,6 +150,26 @@ namespace CreateProjectFTPFolder
             }
 
             return true;
+        }
+    }
+
+    [Serializable]
+    internal class DirectoryAlreadyExistsExceptions : IOException
+    {
+        public DirectoryAlreadyExistsExceptions()
+        {
+        }
+
+        public DirectoryAlreadyExistsExceptions(string message) : base(message)
+        {
+        }
+
+        public DirectoryAlreadyExistsExceptions(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected DirectoryAlreadyExistsExceptions(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }

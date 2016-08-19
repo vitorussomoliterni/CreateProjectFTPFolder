@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 
 namespace CreateProjectFTPFolder
@@ -23,7 +22,7 @@ namespace CreateProjectFTPFolder
 
         private string SetGDrivePath(string projectNumberWithName)
         {
-            return string.Format("C:\\test\\20{0}\\{1}\\", ProjectYear, projectNumberWithName); // Sets the path for the new folder
+            return string.Format(@"G:\20{0}\{1}\", ProjectYear, projectNumberWithName); // Sets the path for the new folder
         }
 
         private string GetProjectNumberWithName(string originalPath)
@@ -43,7 +42,7 @@ namespace CreateProjectFTPFolder
 
         private string GetOriginalPath(string projectNumber)
         {
-            var path = string.Format("P:\\20{0}\\", ProjectYear); // Sets the folder where to look into
+            var path = string.Format(@"P:\20{0}\", ProjectYear); // Sets the folder where to look into
             var searchPattern = string.Format("{0}_*", ProjectNumber); // Sets what folder to look for
 
             var result = (from dir in
