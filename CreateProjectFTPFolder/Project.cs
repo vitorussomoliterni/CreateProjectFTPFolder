@@ -50,7 +50,14 @@ namespace CreateProjectFTPFolder
                              Directory.EnumerateDirectories(path, searchPattern)
                          select dir);
 
-            return result.FirstOrDefault().ToString(); // Returns the whole path
+            if (result.Count() == 0)
+            {
+                throw new DirectoryNotFoundException();
+            }
+
+            var found = result.FirstOrDefault().ToString();
+
+            return found; // Returns the whole path
         }
     }
 }

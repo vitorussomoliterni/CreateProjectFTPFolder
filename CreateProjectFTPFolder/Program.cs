@@ -36,14 +36,30 @@ namespace CreateProjectFTPFolder
 
                 else
                 {
-                    var project = new Project(projectNumber);
-                    if (ConfirmResult(project))
+                    try
                     {
-                        CreateNewFolder(project);
+                        var project = new Project(projectNumber);
+
+                        if (ConfirmResult(project))
+                        {
+                            CreateNewFolder(project);
+                            Console.WriteLine("Press any key to exit.");
+                            Console.ReadKey();
+                            break;
+                        }
+                        else
+                        {
+                            if (!CheckIfExit())
+                            {
+                                break;
+                            }
+                        }
+
                     }
-                    else
+                    catch (DirectoryNotFoundException ex)
                     {
-                        CheckIfExit();
+                        Console.WriteLine("Error: no folder found on the P drive for that project number.");
+                        Console.WriteLine("Please try again.\n");
                     }
                 }
             }
@@ -56,7 +72,7 @@ namespace CreateProjectFTPFolder
                 Directory.CreateDirectory("C:\\test\\" + project.ProjectNumberWithName);
 
                 var SourcePath = @"F:\template\FTP";
-                var DestinationPath = @"C:\test" + project.ProjectNumberWithName;
+                var DestinationPath = @"C:\test\" + project.ProjectNumberWithName;
 
                 //Now Create all of the directories
                 foreach (string dirPath in Directory.GetDirectories(SourcePath, "*",
@@ -67,6 +83,8 @@ namespace CreateProjectFTPFolder
                 foreach (string newPath in Directory.GetFiles(SourcePath, "*.*",
                     SearchOption.AllDirectories))
                     File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
+
+                Console.WriteLine("\nSuccess.\n");
             }
             catch (Exception ex)
             {
@@ -74,14 +92,30 @@ namespace CreateProjectFTPFolder
             }
         }
 
-        private static void CheckIfExit()
+        private static bool CheckIfExit()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.Write("Would you like to enter a new project? (Y/N) ");
+                var response = Console.ReadLine();
+
+                while (true)
+                {
+                    if (response.ToLower().Equals("y"))
+                    {
+                        return true;
+                    }
+                    else if (response.ToLower().Equals("n"))
+                    {
+                        return false;
+                    }
+                }
+            }
         }
 
         private static bool ConfirmResult(Project project)
         {
-            Console.WriteLine("The project you requested is {0}\n", project.ProjectNumberWithName);
+            Console.WriteLine("\nThe project you requested is {0}\n", project.ProjectNumberWithName);
             Console.WriteLine("This new folder will be created:  {0}\n", project.GDrivePath);
             Console.Write("Are you sure you want to proceed? (Y/N) ");
 
