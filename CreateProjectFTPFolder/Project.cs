@@ -52,12 +52,10 @@ namespace CreateProjectFTPFolder
 
             if (result.Count() == 0)
             {
-                throw new DirectoryNotFoundException();
+                throw new DirectoryNotFoundException(); // Throws an exception if no directory was found for that project number
             }
 
-            var found = result.FirstOrDefault().ToString();
-
-            return found; // Returns the whole path
+            return result.FirstOrDefault().ToString(); // Returns the whole path
         }
     }
 }

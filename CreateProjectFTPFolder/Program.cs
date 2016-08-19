@@ -20,7 +20,7 @@ namespace CreateProjectFTPFolder
 
             while (true)
             {
-                Console.Write("Enter the project number (type 'exit' to exit the program): ");
+                Console.Write("Enter the project number (type 'exit' to exit): ");
                 var userInput = Console.ReadLine(); // Get input from user
                 var projectNumber = userInput.Trim().ToLower(); // Trim input and make it lower case
 
@@ -31,7 +31,7 @@ namespace CreateProjectFTPFolder
 
                 if (!CheckInput(projectNumber)) // Check if the user input is not a proper project number
                 {
-                    Console.WriteLine("Invalid project number. The project number must consist in 5 digits.\n");
+                    Console.WriteLine("Invalid project number. The project number must be 5 digits long and contain no letter nor special characters.\n");
                 }
 
                 else
@@ -43,9 +43,10 @@ namespace CreateProjectFTPFolder
                         if (ConfirmResult(project))
                         {
                             CreateNewFolder(project);
-                            Console.WriteLine("Press any key to exit.");
-                            Console.ReadKey();
-                            break;
+                            if (!CheckIfExit())
+                            {
+                                break;
+                            }
                         }
                         else
                         {
@@ -58,8 +59,11 @@ namespace CreateProjectFTPFolder
                     }
                     catch (DirectoryNotFoundException ex)
                     {
-                        Console.WriteLine("Error: no folder found on the P drive for that project number.");
-                        Console.WriteLine("Please try again.\n");
+                        Console.WriteLine("Error: no folder found on the P drive for the project {0}.", projectNumber);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
                     }
                 }
             }
