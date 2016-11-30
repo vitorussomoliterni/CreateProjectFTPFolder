@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
 
 namespace CreateProjectFTPFolder
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             ShowMenu();
@@ -90,6 +92,10 @@ namespace CreateProjectFTPFolder
                     File.Copy(newPath, newPath.Replace(SourcePath, project.GDrivePath), true);
 
                 Console.WriteLine("\nSuccess.\n");
+
+                Clipboard.SetText(project.ProjectNumberWithName);
+
+                Console.WriteLine("{0} copied to the clipboard.\n", project.ProjectNumberWithName);
             }
             catch (Exception ex)
             {
